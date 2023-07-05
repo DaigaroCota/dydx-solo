@@ -403,7 +403,7 @@ library OperationImpl {
     // verify liquidatable
     if (Account.Status.Liquid != state.getStatus(args.liquidAccount)) {
       Require.that(
-        ! /* requireMinBorrow = */state.isCollateralized(args.liquidAccount, cache, false),
+        /* requireMinBorrow = */ !state.isCollateralized(args.liquidAccount, cache, false),
         FILE,
         "Unliquidatable account",
         args.liquidAccount.owner,

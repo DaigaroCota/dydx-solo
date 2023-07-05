@@ -28,7 +28,7 @@ import {MultiSig} from "./MultiSig.sol";
  * Multi-Signature Wallet with delay in execution.
  * Allows multiple parties to execute a transaction after a time lock has passed.
  * Adapted from Amir Bandeali's MultiSigWalletWithTimeLock contract.
- * 
+ *
  * Logic Changes:
  *  - Only owners can execute transactions
  *  - Require that each transaction succeeds
