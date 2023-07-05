@@ -19,8 +19,7 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { Storage } from "./lib/Storage.sol";
-
+import {Storage} from "./lib/Storage.sol";
 
 /**
  * @title State
@@ -28,7 +27,6 @@ import { Storage } from "./lib/Storage.sol";
  *
  * Base-level contract that holds the state of Solo
  */
-contract State
-{
-    Storage.State g_state;
+contract State {
+  Storage.State g_state;
 }

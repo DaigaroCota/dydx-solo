@@ -19,9 +19,8 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { SoloMargin } from "../../protocol/SoloMargin.sol";
-import { Require } from "../../protocol/lib/Require.sol";
-
+import {SoloMargin} from "../../protocol/SoloMargin.sol";
+import {Require} from "../../protocol/lib/Require.sol";
 
 /**
  * @title OnlySolo
@@ -30,34 +29,24 @@ import { Require } from "../../protocol/lib/Require.sol";
  * Inheritable contract that restricts the calling of certain functions to Solo only
  */
 contract OnlySolo {
+  // ============ Constants ============
 
-    // ============ Constants ============
+  bytes32 constant FILE = "OnlySolo";
 
-    bytes32 constant FILE = "OnlySolo";
+  // ============ Storage ============
 
-    // ============ Storage ============
+  SoloMargin public SOLO_MARGIN;
 
-    SoloMargin public SOLO_MARGIN;
+  // ============ Constructor ============
 
-    // ============ Constructor ============
+  constructor(address soloMargin) public {
+    SOLO_MARGIN = SoloMargin(soloMargin);
+  }
 
-    constructor (
-        address soloMargin
-    )
-        public
-    {
-        SOLO_MARGIN = SoloMargin(soloMargin);
-    }
+  // ============ Modifiers ============
 
-    // ============ Modifiers ============
-
-    modifier onlySolo(address from) {
-        Require.that(
-            from == address(SOLO_MARGIN),
-            FILE,
-            "Only Solo can call function",
-            from
-        );
-        _;
-    }
+  modifier onlySolo(address from) {
+    Require.that(from == address(SOLO_MARGIN), FILE, "Only Solo can call function", from);
+    _;
+  }
 }

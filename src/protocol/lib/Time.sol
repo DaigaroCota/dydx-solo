@@ -19,8 +19,7 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { Math } from "./Math.sol";
-
+import {Math} from "./Math.sol";
 
 /**
  * @title Time
@@ -29,14 +28,9 @@ import { Math } from "./Math.sol";
  * Library for dealing with time, assuming timestamps fit within 32 bits (valid until year 2106)
  */
 library Time {
+  // ============ Library Functions ============
 
-    // ============ Library Functions ============
-
-    function currentTime()
-        internal
-        view
-        returns (uint32)
-    {
-        return Math.to32(block.timestamp);
-    }
+  function currentTime() internal view returns (uint32) {
+    return Math.to32(block.timestamp);
+  }
 }

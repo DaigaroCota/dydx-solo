@@ -19,13 +19,12 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { Ownable } from "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import { IAutoTrader } from "../../protocol/interfaces/IAutoTrader.sol";
-import { Account } from "../../protocol/lib/Account.sol";
-import { Require } from "../../protocol/lib/Require.sol";
-import { Types } from "../../protocol/lib/Types.sol";
-import { OnlySolo } from "../helpers/OnlySolo.sol";
-
+import {Ownable} from "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import {IAutoTrader} from "../../protocol/interfaces/IAutoTrader.sol";
+import {Account} from "../../protocol/lib/Account.sol";
+import {Require} from "../../protocol/lib/Require.sol";
+import {Types} from "../../protocol/lib/Types.sol";
+import {OnlySolo} from "../helpers/OnlySolo.sol";
 
 /**
  * @title Refunder
@@ -33,114 +32,73 @@ import { OnlySolo } from "../helpers/OnlySolo.sol";
  *
  * Allows refunding a user for some amount of tokens for some market.
  */
-contract Refunder is
-    Ownable,
-    OnlySolo,
-    IAutoTrader
-{
-    using Types for Types.Wei;
+contract Refunder is Ownable, OnlySolo, IAutoTrader {
+  using Types for Types.Wei;
 
-    // ============ Constants ============
+  // ============ Constants ============
 
-    bytes32 constant FILE = "Refunder";
+  bytes32 constant FILE = "Refunder";
 
-    // ============ Events ============
+  // ============ Events ============
 
-    event LogGiverAdded(
-        address giver
-    );
+  event LogGiverAdded(address giver);
 
-    event LogGiverRemoved(
-        address giver
-    );
+  event LogGiverRemoved(address giver);
 
-    event LogRefund(
-        Account.Info account,
-        uint256 marketId,
-        uint256 amount
-    );
+  event LogRefund(Account.Info account, uint256 marketId, uint256 amount);
 
-    // ============ Storage ============
+  // ============ Storage ============
 
-    // the addresses that are able to give funds
-    mapping (address => bool) public g_givers;
+  // the addresses that are able to give funds
+  mapping(address => bool) public g_givers;
 
-    // ============ Constructor ============
+  // ============ Constructor ============
 
-    constructor (
-        address soloMargin,
-        address[] memory givers
-    )
-        public
-        OnlySolo(soloMargin)
-    {
-        for (uint256 i = 0; i < givers.length; i++) {
-            g_givers[givers[i]] = true;
-        }
+  constructor(address soloMargin, address[] memory givers) public OnlySolo(soloMargin) {
+    for (uint256 i = 0; i < givers.length; i++) {
+      g_givers[givers[i]] = true;
     }
+  }
 
-    // ============ Admin Functions ============
+  // ============ Admin Functions ============
 
-    function addGiver(
-        address giver
-    )
-        external
-        onlyOwner
-    {
-        emit LogGiverAdded(giver);
-        g_givers[giver] = true;
-    }
+  function addGiver(address giver) external onlyOwner {
+    emit LogGiverAdded(giver);
+    g_givers[giver] = true;
+  }
 
-    function removeGiver(
-        address giver
-    )
-        external
-        onlyOwner
-    {
-        emit LogGiverRemoved(giver);
-        g_givers[giver] = false;
-    }
+  function removeGiver(address giver) external onlyOwner {
+    emit LogGiverRemoved(giver);
+    g_givers[giver] = false;
+  }
 
-    // ============ Only-Solo Functions ============
+  // ============ Only-Solo Functions ============
 
-    function getTradeCost(
-        uint256 inputMarketId,
-        uint256 /* outputMarketId */,
-        Account.Info memory makerAccount,
-        Account.Info memory takerAccount,
-        Types.Par memory /* oldInputPar */,
-        Types.Par memory /* newInputPar */,
-        Types.Wei memory inputWei,
-        bytes memory /* data */
-    )
-        public
-        onlySolo(msg.sender)
-        returns (Types.AssetAmount memory)
-    {
-        Require.that(
-            g_givers[takerAccount.owner],
-            FILE,
-            "Giver not approved",
-            takerAccount.owner
-        );
+  function getTradeCost(
+    uint256 inputMarketId,
+    uint256, /* outputMarketId */
+    Account.Info memory makerAccount,
+    Account.Info memory takerAccount,
+    Types.Par memory, /* oldInputPar */
+    Types.Par memory, /* newInputPar */
+    Types.Wei memory inputWei,
+    bytes memory /* data */
+  )
+    public
+    onlySolo(msg.sender)
+    returns (Types.AssetAmount memory)
+  {
+    Require.that(g_givers[takerAccount.owner], FILE, "Giver not approved", takerAccount.owner);
 
-        Require.that(
-            inputWei.isPositive(),
-            FILE,
-            "Refund must be positive"
-        );
+    Require.that(inputWei.isPositive(), FILE, "Refund must be positive");
 
-        emit LogRefund(
-            makerAccount,
-            inputMarketId,
-            inputWei.value
-        );
+    emit LogRefund(makerAccount, inputMarketId, inputWei.value);
 
-        return Types.AssetAmount({
-            sign: false,
-            denomination: Types.AssetDenomination.Par,
-            ref: Types.AssetReference.Delta,
-            value: 0
-        });
-    }
+    return Types.AssetAmount({
+      sign: false,
+      denomination: Types.AssetDenomination.Par,
+      ref: Types.AssetReference.Delta,
+      value: 0
+    });
+  }
 }

@@ -19,10 +19,9 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { IPriceOracle } from "../../protocol//interfaces/IPriceOracle.sol";
-import { Monetary } from "../../protocol/lib/Monetary.sol";
-import { IMakerOracle } from "../interfaces/IMakerOracle.sol";
-
+import {IPriceOracle} from "../../protocol//interfaces/IPriceOracle.sol";
+import {Monetary} from "../../protocol/lib/Monetary.sol";
+import {IMakerOracle} from "../interfaces/IMakerOracle.sol";
 
 /**
  * @title WethPriceOracle
@@ -30,33 +29,21 @@ import { IMakerOracle } from "../interfaces/IMakerOracle.sol";
  *
  * PriceOracle that returns the price of Wei in USD
  */
-contract WethPriceOracle is
-    IPriceOracle
-{
-    // ============ Storage ============
+contract WethPriceOracle is IPriceOracle {
+  // ============ Storage ============
 
-    IMakerOracle public MEDIANIZER;
+  IMakerOracle public MEDIANIZER;
 
-    // ============ Constructor =============
+  // ============ Constructor =============
 
-    constructor(
-        address medianizer
-    )
-        public
-    {
-        MEDIANIZER = IMakerOracle(medianizer);
-    }
+  constructor(address medianizer) public {
+    MEDIANIZER = IMakerOracle(medianizer);
+  }
 
-    // ============ IPriceOracle Functions =============
+  // ============ IPriceOracle Functions =============
 
-    function getPrice(
-        address /* token */
-    )
-        public
-        view
-        returns (Monetary.Price memory)
-    {
-        (bytes32 value, /* bool fresh */) = MEDIANIZER.peek();
-        return Monetary.Price({ value: uint256(value) });
-    }
+  function getPrice(address /* token */ ) public view returns (Monetary.Price memory) {
+    (bytes32 value, /* bool fresh */ ) = MEDIANIZER.peek();
+    return Monetary.Price({value: uint256(value)});
+  }
 }

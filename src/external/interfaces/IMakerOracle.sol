@@ -19,7 +19,6 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-
 /**
  * @title IMakerOracle
  * @author dYdX
@@ -27,26 +26,19 @@ pragma experimental ABIEncoderV2;
  * Interface for the price oracles run by MakerDao
  */
 interface IMakerOracle {
+  // Event that is logged when the `note` modifier is used
+  event LogNote(
+    bytes4 indexed msgSig,
+    address indexed msgSender,
+    bytes32 indexed arg1,
+    bytes32 indexed arg2,
+    uint256 msgValue,
+    bytes msgData
+  ) anonymous;
 
-    // Event that is logged when the `note` modifier is used
-    event LogNote(
-        bytes4 indexed msgSig,
-        address indexed msgSender,
-        bytes32 indexed arg1,
-        bytes32 indexed arg2,
-        uint256 msgValue,
-        bytes msgData
-    ) anonymous;
+  // returns the current value (ETH/USD * 10**18) as a bytes32
+  function peek() external view returns (bytes32, bool);
 
-    // returns the current value (ETH/USD * 10**18) as a bytes32
-    function peek()
-        external
-        view
-        returns (bytes32, bool);
-
-    // requires a fresh price and then returns the current value
-    function read()
-        external
-        view
-        returns (bytes32);
+  // requires a fresh price and then returns the current value
+  function read() external view returns (bytes32);
 }

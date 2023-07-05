@@ -19,7 +19,6 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-
 /**
  * @title ICurve
  * @author dYdX
@@ -27,18 +26,7 @@ pragma experimental ABIEncoderV2;
  * Partial interface for a Curve contract.
  */
 interface ICurve {
+  function fee() external view returns (uint256);
 
-    function fee()
-        external
-        view
-        returns (uint256);
-
-    function get_dy(
-        int128 i,
-        int128 j,
-        uint256 dx
-    )
-        external
-        view
-        returns (uint256);
+  function get_dy(int128 i, int128 j, uint256 dx) external view returns (uint256);
 }

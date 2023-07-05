@@ -19,9 +19,8 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { SafeMath } from "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import { Math } from "./Math.sol";
-
+import {SafeMath} from "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import {Math} from "./Math.sol";
 
 /**
  * @title Decimal
@@ -30,57 +29,33 @@ import { Math } from "./Math.sol";
  * Library that defines a fixed-point number with 18 decimal places.
  */
 library Decimal {
-    using SafeMath for uint256;
+  using SafeMath for uint256;
 
-    // ============ Constants ============
+  // ============ Constants ============
 
-    uint256 constant BASE = 10**18;
+  uint256 constant BASE = 10 ** 18;
 
-    // ============ Structs ============
+  // ============ Structs ============
 
-    struct D256 {
-        uint256 value;
-    }
+  struct D256 {
+    uint256 value;
+  }
 
-    // ============ Functions ============
+  // ============ Functions ============
 
-    function one()
-        internal
-        pure
-        returns (D256 memory)
-    {
-        return D256({ value: BASE });
-    }
+  function one() internal pure returns (D256 memory) {
+    return D256({value: BASE});
+  }
 
-    function onePlus(
-        D256 memory d
-    )
-        internal
-        pure
-        returns (D256 memory)
-    {
-        return D256({ value: d.value.add(BASE) });
-    }
+  function onePlus(D256 memory d) internal pure returns (D256 memory) {
+    return D256({value: d.value.add(BASE)});
+  }
 
-    function mul(
-        uint256 target,
-        D256 memory d
-    )
-        internal
-        pure
-        returns (uint256)
-    {
-        return Math.getPartial(target, d.value, BASE);
-    }
+  function mul(uint256 target, D256 memory d) internal pure returns (uint256) {
+    return Math.getPartial(target, d.value, BASE);
+  }
 
-    function div(
-        uint256 target,
-        D256 memory d
-    )
-        internal
-        pure
-        returns (uint256)
-    {
-        return Math.getPartial(target, BASE, d.value);
-    }
+  function div(uint256 target, D256 memory d) internal pure returns (uint256) {
+    return Math.getPartial(target, BASE, d.value);
+  }
 }

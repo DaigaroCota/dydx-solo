@@ -19,7 +19,6 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-
 /**
  * @title IUniswapV2Pair
  * @author dYdX
@@ -27,9 +26,5 @@ pragma experimental ABIEncoderV2;
  * Partial interface for a Uniswap V2 pair.
  */
 interface IUniswapV2Pair {
-
-    function getReserves()
-        external
-        view
-        returns (uint112, uint112, uint32);
+  function getReserves() external view returns (uint112, uint112, uint32);
 }

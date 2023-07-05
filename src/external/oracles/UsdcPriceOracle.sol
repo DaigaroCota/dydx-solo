@@ -19,9 +19,8 @@
 pragma solidity 0.5.7;
 pragma experimental ABIEncoderV2;
 
-import { IPriceOracle } from "../../protocol/interfaces/IPriceOracle.sol";
-import { Monetary } from "../../protocol/lib/Monetary.sol";
-
+import {IPriceOracle} from "../../protocol/interfaces/IPriceOracle.sol";
+import {Monetary} from "../../protocol/lib/Monetary.sol";
 
 /**
  * @title UsdcPriceOracle
@@ -29,24 +28,16 @@ import { Monetary } from "../../protocol/lib/Monetary.sol";
  *
  * PriceOracle that returns the price of USDC in USD
  */
-contract UsdcPriceOracle is
-    IPriceOracle
-{
-    // ============ Constants ============
+contract UsdcPriceOracle is IPriceOracle {
+  // ============ Constants ============
 
-    uint256 constant DECIMALS = 6;
+  uint256 constant DECIMALS = 6;
 
-    uint256 constant EXPECTED_PRICE = ONE_DOLLAR / (10 ** DECIMALS);
+  uint256 constant EXPECTED_PRICE = ONE_DOLLAR / (10 ** DECIMALS);
 
-    // ============ IPriceOracle Functions =============
+  // ============ IPriceOracle Functions =============
 
-    function getPrice(
-        address /* token */
-    )
-        public
-        view
-        returns (Monetary.Price memory)
-    {
-        return Monetary.Price({ value: EXPECTED_PRICE });
-    }
+  function getPrice(address /* token */ ) public view returns (Monetary.Price memory) {
+    return Monetary.Price({value: EXPECTED_PRICE});
+  }
 }
