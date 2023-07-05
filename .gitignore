@@ -12,3 +12,7 @@ config
 # VIM
 *.swo
 *.swp
+
+# FOUNDRY
+out
+cache
